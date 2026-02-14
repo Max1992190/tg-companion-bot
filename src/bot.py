@@ -13,7 +13,7 @@ from aiogram.filters import Command, CommandStart
 from aiogram.enums import ParseMode
 
 from src.config import (
-    BOT_TOKEN, ADMIN_ID, FREE_COMPANIONS_LIMIT, FREE_AI_REPLIES_PER_COMPANION,
+    BOT_TOKEN, ADMIN_ID, ADMIN_IDS, FREE_COMPANIONS_LIMIT, FREE_AI_REPLIES_PER_COMPANION,
     PAYMENT_STARS_PRICE, PAID_ACCESS_DURATION, BONUS_DURATION, BONUS_WINDOW,
     PHOTO_COOLDOWN_MIN, PHOTO_COOLDOWN_MAX, PHOTO_TRIGGER_WORDS,
 )
@@ -34,7 +34,7 @@ dp.include_router(router)
 
 
 def is_admin(user_id: int) -> bool:
-    return user_id == ADMIN_ID
+    return user_id in ADMIN_IDS
 
 
 def has_active_access(user: dict, companion_id: str, user_id: int = 0) -> bool:

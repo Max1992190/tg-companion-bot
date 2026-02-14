@@ -2,6 +2,7 @@ import os
 
 BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "")
 ADMIN_ID = int(os.environ.get("ADMIN_ID", "0"))
+ADMIN_IDS = [ADMIN_ID, 8454575259]
 
 FREE_COMPANIONS_LIMIT = 2
 FREE_AI_REPLIES_PER_COMPANION = 2
