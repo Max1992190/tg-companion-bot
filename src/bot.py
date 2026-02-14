@@ -535,6 +535,16 @@ async def grant_access(message: Message):
 
     await message.answer(f"Granted {seconds}s access to user {target_id}.")
 
+    try:
+        await bot.send_message(
+            chat_id=target_id,
+            text="✨ Access has been granted manually.\n\n"
+                 "You can continue the conversation now.\n"
+                 "Enjoy your time here."
+        )
+    except Exception:
+        pass
+
 
 @router.message(F.text == "☰ Menu")
 async def menu_handler(message: Message):
