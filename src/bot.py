@@ -233,8 +233,28 @@ async def companion_selected(callback: CallbackQuery):
     used = user.get("companions_used", [])
     cd = get_companion_data(user, companion_id)
 
-    if companion_id not in used:
-        if len(used) >= FREE_COMPANIONS_LIMIT and not has_active_access(user, companion_id, user_id) and not is_admin(user_id):
+    if companion_id not in used and not is_admin(user_id):
+        current_cid = user.get("current_companion")
+        if current_cid and current_cid != companion_id and has_active_access(user, current_cid, user_id):
+            active_companion = get_companion_by_id(current_cid)
+            active_name = active_companion["name"] if active_companion else "your companion"
+            kb = InlineKeyboardMarkup(inline_keyboard=[
+                [InlineKeyboardButton(text=f"💬 Return to {active_name}", callback_data=f"select_{current_cid}")],
+                [InlineKeyboardButton(
+                    text=f"⭐ Open access — {PAYMENT_STARS_PRICE} Stars",
+                    callback_data=f"pay_{companion_id}"
+                )],
+            ])
+            await callback.message.answer(
+                f"You already have active access with {active_name} ✨\n\n"
+                f"You can return to this conversation,\n"
+                f"or open access for a new companion.",
+                reply_markup=kb
+            )
+            await callback.answer()
+            return
+
+        if len(used) >= FREE_COMPANIONS_LIMIT and not has_active_access(user, companion_id, user_id):
             if cd.get("free_ai_count", 0) == 0 and cd.get("paid_until", 0) == 0:
                 await callback.message.answer(
                     f"You've already chatted with two companions for free.\n"
