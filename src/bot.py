@@ -258,6 +258,8 @@ async def companion_selected(callback: CallbackQuery):
         )
 
     await callback.message.edit_reply_markup(reply_markup=None)
+    await bot.send_chat_action(chat_id=user_id, action="typing")
+    await asyncio.sleep(2.0)
     await callback.message.answer(
         f"*{companion['name']}*\n\n{companion['greeting']}",
         parse_mode=ParseMode.MARKDOWN,
@@ -551,17 +553,18 @@ async def chat_handler(message: Message):
         if len(cd["chat_history"]) > 20:
             cd["chat_history"] = cd["chat_history"][-20:]
         save_user(user_id, user)
+        await bot.send_chat_action(chat_id=user_id, action="typing")
+        await asyncio.sleep(random.uniform(5.0, 7.0))
         await message.answer(f"{reply} {emoji}")
         return
 
     await bot.send_chat_action(chat_id=user_id, action="typing")
-    delay = random.uniform(1.0, 3.0)
-    await asyncio.sleep(delay)
 
     chat_history = cd.get("chat_history", [])
     free_ai_count = cd.get("free_ai_count", 0)
 
-    ai_reply = generate_ai_response(
+    ai_task = asyncio.create_task(asyncio.to_thread(
+        generate_ai_response,
         companion_name=companion["name"],
         companion_description=companion["description"],
         user_name=user["name"],
@@ -569,7 +572,9 @@ async def chat_handler(message: Message):
         free_ai_count=free_ai_count,
         chat_history=chat_history,
         mood=mood,
-    )
+    ))
+    await asyncio.sleep(random.uniform(5.0, 7.0))
+    ai_reply = await ai_task
 
     emoji = pick_emoji(user, mood)
     final_reply = f"{ai_reply} {emoji}"
