@@ -7,7 +7,7 @@ from aiogram import Bot, Dispatcher, F, Router
 from aiogram.types import (
     Message, CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton,
     ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove,
-    LabeledPrice, PreCheckoutQuery,
+    LabeledPrice, PreCheckoutQuery, FSInputFile,
 )
 from aiogram.filters import Command, CommandStart
 from aiogram.enums import ParseMode
@@ -88,15 +88,31 @@ def get_full_menu_keyboard() -> InlineKeyboardMarkup:
     )
 
 
-def get_companion_keyboard() -> InlineKeyboardMarkup:
+async def send_companion_cards(chat_id: int):
     companions = get_companions_list()
-    buttons = []
     for c in companions:
-        buttons.append([InlineKeyboardButton(
-            text=f"{c['name']} — {c['description'][:40]}...",
-            callback_data=f"select_{c['id']}"
-        )])
-    return InlineKeyboardMarkup(inline_keyboard=buttons)
+        caption = f"*{c['name']}*, {c['age']}\n\n{c['description']}"
+        select_kb = InlineKeyboardMarkup(inline_keyboard=[
+            [InlineKeyboardButton(text=f"💬 Chat with {c['name']}", callback_data=f"select_{c['id']}")]
+        ])
+        profile_photo = c.get("profile_photo")
+        if profile_photo:
+            photo = FSInputFile(profile_photo)
+            await bot.send_photo(
+                chat_id=chat_id,
+                photo=photo,
+                caption=caption,
+                parse_mode=ParseMode.MARKDOWN,
+                reply_markup=select_kb,
+                protect_content=True,
+            )
+        else:
+            await bot.send_message(
+                chat_id=chat_id,
+                text=caption,
+                parse_mode=ParseMode.MARKDOWN,
+                reply_markup=select_kb,
+            )
 
 
 def get_payment_keyboard(companion_id: str) -> InlineKeyboardMarkup:
@@ -159,7 +175,7 @@ async def cmd_start(message: Message):
         f"Welcome back, {user['name']}! Choose a companion to chat with:",
         reply_markup=get_menu_keyboard()
     )
-    await message.answer("Pick someone special:", reply_markup=get_companion_keyboard())
+    await send_companion_cards(user_id)
 
 
 @router.callback_query(F.data == "age_confirm")
@@ -221,9 +237,9 @@ async def companion_selected(callback: CallbackQuery):
             if cd.get("free_ai_count", 0) == 0 and cd.get("paid_until", 0) == 0:
                 await callback.message.answer(
                     "You've already chatted with two companions for free.\n"
-                    "Choose one of them, or open access to chat with someone new.",
-                    reply_markup=get_companion_keyboard()
+                    "Choose one of them, or open access to chat with someone new."
                 )
+                await send_companion_cards(user_id)
                 await callback.answer()
                 return
         if companion_id not in used:
@@ -316,7 +332,8 @@ async def back_to_chat(callback: CallbackQuery):
 
     companion_id = user.get("current_companion")
     if not companion_id:
-        await callback.message.answer("Choose a companion first:", reply_markup=get_companion_keyboard())
+        await callback.message.answer("Choose a companion first:")
+        await send_companion_cards(user_id)
     else:
         companion = get_companion_by_id(companion_id)
         name = companion["name"] if companion else "your companion"
@@ -336,7 +353,8 @@ async def change_companion(callback: CallbackQuery):
         return
 
     await callback.message.edit_reply_markup(reply_markup=None)
-    await callback.message.answer("Choose a companion:", reply_markup=get_companion_keyboard())
+    await callback.message.answer("Choose a companion:")
+    await send_companion_cards(user_id)
     await callback.answer()
 
 
@@ -459,7 +477,7 @@ async def chat_handler(message: Message):
             f"Nice to meet you, {name}! Now choose a companion:",
             reply_markup=get_menu_keyboard()
         )
-        await message.answer("Pick someone special:", reply_markup=get_companion_keyboard())
+        await send_companion_cards(user_id)
         return
 
     if not user.get("name"):
@@ -470,12 +488,14 @@ async def chat_handler(message: Message):
 
     companion_id = user.get("current_companion")
     if not companion_id:
-        await message.answer("Choose a companion first:", reply_markup=get_companion_keyboard())
+        await message.answer("Choose a companion first:")
+        await send_companion_cards(user_id)
         return
 
     companion = get_companion_by_id(companion_id)
     if not companion:
-        await message.answer("Something went wrong. Choose a companion:", reply_markup=get_companion_keyboard())
+        await message.answer("Something went wrong. Choose a companion:")
+        await send_companion_cards(user_id)
         return
 
     cd = get_companion_data(user, companion_id)
