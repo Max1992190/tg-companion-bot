@@ -388,7 +388,13 @@ async def new_models(callback: CallbackQuery):
 
 @router.callback_query(F.data == "support")
 async def support_handler(callback: CallbackQuery):
-    await callback.message.answer("For support, please contact us at @YourSupportBot 🆘")
+    await callback.message.answer(
+        "If any service is not working,\n"
+        "or your payment was successful but access did not appear,\n"
+        "or you have any other questions —\n\n"
+        "please contact our support team:\n\n"
+        "@loveis2030_support"
+    )
     await callback.answer()
 
 
