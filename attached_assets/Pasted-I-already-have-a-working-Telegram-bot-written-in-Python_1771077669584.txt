@@ -1,0 +1,217 @@
+I already have a working Telegram bot written in Python using aiogram.
+It uses polling (no webhook), OpenAI API, local JSON storage, and Telegram Stars payments.
+
+GOAL:
+Create a FULLY ANALOGOUS bot, but:
+- all user-facing text must be in ENGLISH
+- the bot must be strictly 18+ with mandatory age confirmation
+- the existing logic, limits, and monetization must remain the same
+
+IMPORTANT RULES:
+- Do NOT rewrite the whole project
+- Do NOT change the architecture
+- Do NOT simplify logic
+- Only adapt language, add age-gate, and ensure adult tone (non-explicit)
+
+--------------------------------------------------
+AGE GATE (MANDATORY, FIRST STEP)
+--------------------------------------------------
+
+1. Add a new user state field:
+   age_confirmed: boolean (default false)
+
+2. When a user sends /start:
+   - Show ONLY the age confirmation message
+   - Do NOT ask for name
+   - Do NOT show menu
+   - Do NOT show companions
+   - Do NOT allow chat or AI responses
+
+AGE CONFIRMATION TEXT (use EXACTLY this):
+
+"International studio of beautiful models
+who enjoy private conversations with you.
+
+🔞 Adults only (18+)
+
+By continuing, you confirm that:
+• You are 18 years old or older
+• This is a virtual conversation
+• You agree to the Terms
+
+Do you confirm?"
+
+Buttons:
+- "✅ I am 18+"
+- "❌ Leave"
+
+3. Button behavior:
+   - If "❌ Leave":
+     • set user state to "blocked"
+     • send: "Access denied."
+     • ignore all future messages
+
+   - If "✅ I am 18+":
+     • set age_confirmed = true
+     • continue with the normal bot flow
+     • next step: ask for user's name
+
+4. Before age_confirmed == true:
+   - ALL handlers must immediately return
+   - No AI calls
+   - No menus
+   - No payments
+   - No photos
+
+--------------------------------------------------
+LANGUAGE & TONE
+--------------------------------------------------
+
+- ALL bot messages must be in ENGLISH
+- Tone: calm, warm, adult, intimate but SAFE
+- NO explicit sexual content
+- NO pornographic descriptions
+- NO sexual actions
+- Allowed: flirting, emotional closeness, adult conversation
+
+DO NOT use words like:
+sex, nude, explicit, nsfw, erotic, porn
+
+Preferred wording:
+private conversation
+emotional connection
+intimate moment
+adult audience
+fantasy-style chat
+
+--------------------------------------------------
+CORE LOGIC (KEEP EXACTLY THE SAME)
+--------------------------------------------------
+
+FREE FUNNEL:
+- User can chat with 2 different companions for free
+- Each companion gives exactly 2 AI replies
+- After that, AI is blocked and paywall is shown once
+
+COMPANION LOGIC:
+- Fixed list of virtual companions
+- Each has:
+  id, name (18+), description, greeting, photos
+- Greeting is shown when a companion is selected
+
+AI RESPONSE LOGIC:
+- free_ai_count == 0:
+  Warm introduction, soft optional question
+
+- free_ai_count == 1:
+  Emotional statement, NO question
+
+- free_ai_count >= 2:
+  AI must NOT be called
+  Show paywall if not shown before
+
+PAYWALL:
+Text (English):
+
+"Access is limited ✨
+
+You can chat for free with two companions.
+To continue this conversation,
+open access for 10 minutes."
+
+PAYMENT:
+- Telegram Stars
+- Price: 75 Stars
+- Duration: 10 minutes
+- NOT a subscription
+- Access is tied to the current companion
+
+--------------------------------------------------
+BONUS LOGIC
+--------------------------------------------------
+
+If user returns:
+- within 5 hours after paid access ends
+- and bonus_given == false
+
+Give:
+- +5 minutes access
+- only once per user
+
+--------------------------------------------------
+PHOTOS IN CHAT
+--------------------------------------------------
+
+Trigger words:
+photo, pic, picture, show me, send a photo
+
+Rules:
+- Photos only with active access
+- First photo can be sent immediately
+- After that: no more than once every 3–4 minutes
+- No repeats
+- If photos are finished: send a message
+- AI is NOT involved in photo logic
+- All photos must be sent with protect_content=True
+
+--------------------------------------------------
+HUMAN UX BEHAVIOR
+--------------------------------------------------
+
+MOODS:
+- warm
+- playful
+- calm
+- dreamy
+
+Mood changes every 10–18 minutes and affects tone.
+
+EMOJIS:
+- OpenAI must NEVER generate emojis
+- Emojis are added only by code
+- Emojis depend on mood
+- Avoid repeating the same emoji
+
+TOKEN SAVING:
+- Short messages like:
+  "ok", "yeah", "lol", emojis
+- Should NOT trigger OpenAI
+- Use a short predefined reply instead
+
+--------------------------------------------------
+MENU (ENGLISH)
+--------------------------------------------------
+
+Reply keyboard:
+
+☰ Menu
+
+💬 Back to chat
+🔁 Change companion
+🧲 New models coming
+🆘 Support
+ℹ️ About
+📄 Terms
+
+--------------------------------------------------
+ADMIN
+--------------------------------------------------
+
+Command:
+/grant <user_id> <seconds>
+
+Rules:
+- Bot owner always has access
+- Owner does not consume free limits
+
+--------------------------------------------------
+FINAL REQUIREMENTS
+--------------------------------------------------
+
+- The bot must feel identical in behavior to the original Russian version
+- Only language and age-gate differ
+- The bot must be safe for Telegram moderation
+- The bot must be safe for OpenAI policies
+- The bot must be ready for production
+
+Implement everything carefully without breaking existing logic.
