@@ -37,6 +37,15 @@ SHORT_REPLIES = [
     "I was just thinking about you...",
 ]
 
+UNCLEAR_REPLIES = [
+    "What do you mean?",
+    "Hmm? Tell me more.",
+    "I'm listening.",
+    "Go on…",
+    "You got my attention.",
+    "I didn't quite catch that.",
+]
+
 MOODS = ["warm", "playful", "calm", "dreamy"]
 
 MOOD_EMOJIS = {

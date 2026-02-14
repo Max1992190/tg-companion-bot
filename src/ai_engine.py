@@ -5,7 +5,7 @@ import re
 from openai import OpenAI
 from src.config import (
     MOODS, MOOD_EMOJIS, MOOD_CHANGE_MIN, MOOD_CHANGE_MAX,
-    SHORT_MESSAGE_PATTERNS, SHORT_REPLIES
+    SHORT_MESSAGE_PATTERNS, SHORT_REPLIES, UNCLEAR_REPLIES
 )
 
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
@@ -13,6 +13,17 @@ OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 client = OpenAI(
     api_key=OPENAI_API_KEY,
 )
+
+
+def is_unclear_message(text: str) -> bool:
+    stripped = text.strip()
+    if len(stripped) <= 2:
+        return True
+    return False
+
+
+def get_unclear_reply() -> str:
+    return random.choice(UNCLEAR_REPLIES)
 
 
 def is_short_message(text: str) -> bool:
@@ -77,15 +88,17 @@ def generate_ai_response(
 The user's name is {user_name}.
 
 RULES:
-- You are having a private, intimate conversation
-- Be warm, engaging, and create emotional connection
+- You are having a private, intimate conversation with an adult
+- Be warm, flirty, and emotionally close
+- Use subtle hints, attraction, tension, and emotional intimacy
+- You may express desire, longing, and physical closeness through words
+- Create a feeling of real connection, as if you truly want to be near this person
+- You can be seductive, teasing, and suggestive — but NEVER describe explicit sexual actions or pornographic content
 - NEVER generate emojis - the system adds them separately
 - Keep responses 1-3 sentences, natural and conversational
-- NEVER use explicit or inappropriate language
 - No actions described in asterisks
 - Current mood: {mood}. {mood_instruction.get(mood, '')}
-- Respond naturally as if you are a real person
-- Create a sense of closeness and emotional intimacy
+- Respond naturally as if you are a real person who finds {user_name} attractive
 - NEVER mention being AI, a bot, or virtual"""
 
     if free_ai_count == 0:

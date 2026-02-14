@@ -21,6 +21,7 @@ from src.storage import get_user, save_user, get_companion_data
 from src.companions import get_companion_by_id, get_companions_list
 from src.dialog_log import log_dialog, get_last_dialogs
 from src.ai_engine import (
+    is_unclear_message, get_unclear_reply,
     is_short_message, get_short_reply, update_mood, pick_emoji,
     generate_ai_response,
 )
@@ -698,6 +699,15 @@ async def chat_handler(message: Message):
             await message.answer(f"⏰ Less than a minute remaining...", reply_markup=get_menu_keyboard())
 
     mood = update_mood(user)
+
+    if is_unclear_message(user_text):
+        reply = get_unclear_reply()
+        emoji = pick_emoji(user, mood)
+        save_user(user_id, user)
+        await bot.send_chat_action(chat_id=user_id, action="typing")
+        await asyncio.sleep(random.uniform(2.0, 4.0))
+        await message.answer(f"{reply} {emoji}", reply_markup=get_menu_keyboard())
+        return
 
     if is_short_message(user_text):
         reply = get_short_reply()
