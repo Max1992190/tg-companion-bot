@@ -19,6 +19,7 @@ from src.config import (
 )
 from src.storage import get_user, save_user, get_companion_data
 from src.companions import get_companion_by_id, get_companions_list
+from src.dialog_log import log_dialog, get_last_dialogs
 from src.ai_engine import (
     is_short_message, get_short_reply, update_mood, pick_emoji,
     generate_ai_response,
@@ -546,6 +547,19 @@ async def grant_access(message: Message):
         pass
 
 
+@router.message(Command("logs"))
+async def view_logs(message: Message):
+    user_id = message.from_user.id
+    if not is_admin(user_id):
+        return
+
+    dialogs = get_last_dialogs(10)
+    if not dialogs:
+        await message.answer("No dialogs logged yet.")
+    else:
+        await message.answer(dialogs)
+
+
 @router.message(F.text == "☰ Menu")
 async def menu_handler(message: Message):
     user_id = message.from_user.id
@@ -672,6 +686,7 @@ async def chat_handler(message: Message):
         await bot.send_chat_action(chat_id=user_id, action="typing")
         await asyncio.sleep(random.uniform(5.0, 7.0))
         await message.answer(f"{reply} {emoji}")
+        log_dialog(user_text, reply)
         return
 
     await bot.send_chat_action(chat_id=user_id, action="typing")
@@ -705,6 +720,7 @@ async def chat_handler(message: Message):
 
     save_user(user_id, user)
     await message.answer(final_reply)
+    log_dialog(user_text, ai_reply)
 
 
 async def handle_photo_request(message: Message, user: dict, user_id: int, companion: dict, cd: dict):
