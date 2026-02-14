@@ -6,6 +6,7 @@ COMPANIONS = [
         "description": "Curious, gentle, and a little shy. Enjoys quiet conversations and thoughtful moments.",
         "greeting": "Hi. I'm Amelia. Let's take this slowly and just talk for a bit.",
         "profile_photo": "attached_assets/IMG_0077_1771081479463.JPG",
+        "welcome_photo": "attached_assets/IMG_0093_1771095056931.JPG",
         "photos": [],
     },
     {
@@ -15,6 +16,7 @@ COMPANIONS = [
         "description": "Confident and warm. Likes meaningful conversations and subtle flirting.",
         "greeting": "Hey. I'm Olivia. I'm glad you're here. How are you feeling right now?",
         "profile_photo": "attached_assets/IMG_0081_1771081491701.WEBP",
+        "welcome_photo": "attached_assets/IMG_0092_1771095106771.JPG",
         "photos": [],
     },
     {
@@ -24,6 +26,7 @@ COMPANIONS = [
         "description": "Playful and light-hearted. Enjoys teasing conversations and spontaneous moments.",
         "greeting": "Hi there. I'm Ava. This feels like a good moment to talk.",
         "profile_photo": "attached_assets/IMG_0076_1771081498503.JPG",
+        "welcome_photo": "attached_assets/IMG_0094_1771095114269.JPG",
         "photos": [],
     },
     {
@@ -33,6 +36,7 @@ COMPANIONS = [
         "description": "Calm and emotionally attentive. Prefers deep talks and quiet intimacy.",
         "greeting": "Hello. I'm Emily. You can relax here, there's no rush.",
         "profile_photo": "attached_assets/IMG_0079_1771081561344.JPG",
+        "welcome_photo": "attached_assets/IMG_0096_1771095160499.JPG",
         "photos": [],
     },
     {
@@ -42,6 +46,7 @@ COMPANIONS = [
         "description": "Soft-spoken and dreamy. Enjoys gentle emotional connection.",
         "greeting": "Hi. I'm Mia. I like conversations that feel a little closer.",
         "profile_photo": "attached_assets/IMG_9875_1771081522683.JPG",
+        "welcome_photo": "attached_assets/IMG_0089_1771095192070.JPG",
         "photos": [],
     },
     {
@@ -51,6 +56,7 @@ COMPANIONS = [
         "description": "Relaxed and confident. Values sincerity and calm adult conversations.",
         "greeting": "Hey. I'm James. Let's just talk openly and see where it goes.",
         "profile_photo": "attached_assets/IMG_0075_1771081508037.JPG",
+        "welcome_photo": "attached_assets/IMG_0097_1771095226053.JPG",
         "photos": [],
     },
     {
@@ -60,6 +66,7 @@ COMPANIONS = [
         "description": "Mature and emotionally intelligent. Enjoys thoughtful dialogue and companionship.",
         "greeting": "Hello. I'm Isabella. I enjoy conversations that feel thoughtful and real.",
         "profile_photo": "attached_assets/IMG_0073_1771081577205.JPG",
+        "welcome_photo": "attached_assets/IMG_0095_1771095259433.JPG",
         "photos": [],
     },
 ]

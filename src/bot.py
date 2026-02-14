@@ -265,6 +265,16 @@ async def companion_selected(callback: CallbackQuery):
         parse_mode=ParseMode.MARKDOWN,
         reply_markup=get_menu_keyboard()
     )
+
+    welcome_photo = companion.get("welcome_photo")
+    if welcome_photo:
+        photo = FSInputFile(welcome_photo)
+        await bot.send_photo(
+            chat_id=user_id,
+            photo=photo,
+            protect_content=True,
+        )
+
     await callback.answer()
 
 
