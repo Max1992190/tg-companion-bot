@@ -83,7 +83,7 @@ def get_full_menu_keyboard() -> InlineKeyboardMarkup:
             [InlineKeyboardButton(text="🧲 Recruiting models", callback_data="new_models")],
             [InlineKeyboardButton(text="🆘 Support", callback_data="support")],
             [InlineKeyboardButton(text="ℹ️ About", callback_data="about")],
-            [InlineKeyboardButton(text="📄 Terms", callback_data="terms")],
+            [InlineKeyboardButton(text="📄 Terms of Service", callback_data="terms")],
         ]
     )
 
@@ -438,12 +438,55 @@ async def about_handler(callback: CallbackQuery):
 @router.callback_query(F.data == "terms")
 async def terms_handler(callback: CallbackQuery):
     await callback.message.answer(
-        "📄 Terms of Use\n\n"
-        "• This service is for adults (18+) only\n"
-        "• All conversations are virtual and AI-powered\n"
-        "• No real personal data is shared\n"
-        "• Payments are non-refundable\n"
-        "• By using this service, you agree to these terms"
+        "================= TERMS OF SERVICE =================\n\n"
+        "1. General Provisions\n"
+        "1.1. This document constitutes an official public offer\n"
+        "for providing virtual text-based communication services.\n"
+        "1.2. By using the service and/or purchasing access,\n"
+        "the user agrees to the terms of this offer.\n\n"
+        "2. Service Description\n"
+        "2.1. The provider grants the user temporary access\n"
+        "to a virtual text conversation with a selected character.\n"
+        "2.2. Communication is carried out automatically\n"
+        "using software algorithms.\n"
+        "2.3. All characters are virtual\n"
+        "and do not represent real individuals.\n\n"
+        "3. Price and Payment Procedure\n"
+        "3.1. The cost of the service is 75 (seventy-five) Telegram Stars.\n"
+        "3.2. Payment is made through the built-in Telegram Stars system.\n"
+        "3.3. The payment is not a subscription.\n"
+        "Access is provided on a one-time basis.\n"
+        "3.4. Access duration is 10 minutes\n"
+        "from the moment payment is confirmed.\n\n"
+        "4. Service Delivery\n"
+        "4.1. Access is activated automatically\n"
+        "after Telegram confirms successful payment.\n"
+        "4.2. Access is provided only\n"
+        "for the selected companion.\n"
+        "4.3. Selecting a different companion\n"
+        "may require a new payment.\n\n"
+        "5. Bonuses\n"
+        "5.1. In certain cases,\n"
+        "additional access time may be granted as a bonus.\n"
+        "5.2. A bonus may be granted only once\n"
+        "and is not a mandatory part of the service.\n\n"
+        "6. Refund Policy\n"
+        "6.1. Once the service has started\n"
+        "(access has been granted),\n"
+        "refunds are not provided.\n"
+        "6.2. Refunds are possible only\n"
+        "in cases covered by Telegram Stars rules.\n\n"
+        "7. Limitation of Liability\n"
+        "7.1. The service is provided \"as is\".\n"
+        "7.2. The provider is not responsible\n"
+        "for user expectations,\n"
+        "subjective evaluation of the conversation,\n"
+        "or technical issues on Telegram's platform.\n\n"
+        "8. Contact Information\n"
+        "8.1. For support inquiries,\n"
+        "please use the corresponding section\n"
+        "in the bot menu.\n\n"
+        "===================================================="
     )
     await callback.answer()
 

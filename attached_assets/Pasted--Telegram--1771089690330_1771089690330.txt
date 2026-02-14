@@ -1,0 +1,88 @@
+У меня есть рабочий Telegram-бот.
+Не переписывай проект целиком.
+
+Нужно изменить ТОЛЬКО пункт меню "Оферта" и текст внутри него.
+
+--------------------------------------------------
+НАЗВАНИЕ ПУНКТА МЕНЮ
+--------------------------------------------------
+
+Заменить пункт:
+"📄 Оферта"
+
+на:
+"📄 Terms of Service"
+
+--------------------------------------------------
+ТЕКСТ ПРИ НАЖАТИИ (АНГЛИЙСКИЙ)
+--------------------------------------------------
+
+"================= TERMS OF SERVICE =================
+
+1. General Provisions
+1.1. This document constitutes an official public offer
+for providing virtual text-based communication services.
+1.2. By using the service and/or purchasing access,
+the user agrees to the terms of this offer.
+
+2. Service Description
+2.1. The provider grants the user temporary access
+to a virtual text conversation with a selected character.
+2.2. Communication is carried out automatically
+using software algorithms.
+2.3. All characters are virtual
+and do not represent real individuals.
+
+3. Price and Payment Procedure
+3.1. The cost of the service is 75 (seventy-five) Telegram Stars.
+3.2. Payment is made through the built-in Telegram Stars system.
+3.3. The payment is not a subscription.
+Access is provided on a one-time basis.
+3.4. Access duration is 10 minutes
+from the moment payment is confirmed.
+
+4. Service Delivery
+4.1. Access is activated automatically
+after Telegram confirms successful payment.
+4.2. Access is provided only
+for the selected companion.
+4.3. Selecting a different companion
+may require a new payment.
+
+5. Bonuses
+5.1. In certain cases,
+additional access time may be granted as a bonus.
+5.2. A bonus may be granted only once
+and is not a mandatory part of the service.
+
+6. Refund Policy
+6.1. Once the service has started
+(access has been granted),
+refunds are not provided.
+6.2. Refunds are possible only
+in cases covered by Telegram Stars rules.
+
+7. Limitation of Liability
+7.1. The service is provided \"as is\".
+7.2. The provider is not responsible
+for user expectations,
+subjective evaluation of the conversation,
+or technical issues on Telegram’s platform.
+
+8. Contact Information
+8.1. For support inquiries,
+please use the corresponding section
+in the bot menu.
+
+===================================================="
+
+--------------------------------------------------
+ВАЖНО
+--------------------------------------------------
+
+- Менять ТОЛЬКО текст и название пункта
+- Логику оплаты, лимитов и бонусов НЕ менять
+- Текст отображать как обычное сообщение
+- Структуру и нумерацию сохранить
+
+Обновить только пункт меню "Terms of Service" и его содержимое.
