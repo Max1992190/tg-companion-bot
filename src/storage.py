@@ -68,5 +68,6 @@ def get_companion_data(user: dict, companion_id: str) -> dict:
             "photos_sent": [],
             "last_photo_time": 0,
             "chat_history": [],
+            "minute_warning_shown": False,
         }
     return user["companion_data"][companion_id]

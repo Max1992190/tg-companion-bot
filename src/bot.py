@@ -342,6 +342,7 @@ async def successful_payment_handler(message: Message):
         cd = get_companion_data(user, companion_id)
 
         cd["paid_until"] = time.time() + PAID_ACCESS_DURATION
+        cd["minute_warning_shown"] = False
         user["last_paid_ended_at"] = 0
         user["current_companion"] = companion_id
         user["state"] = "chatting"
@@ -552,6 +553,7 @@ async def grant_access(message: Message):
         cd["paid_until"] = time.time() + seconds
     else:
         cd["paid_until"] = current_until + seconds
+    cd["minute_warning_shown"] = False
     save_user(target_id, target_user)
 
     await message.answer(f"Granted {seconds}s access to user {target_id}.")
@@ -690,8 +692,10 @@ async def chat_handler(message: Message):
 
     if has_active_access(user, companion_id, user_id) and not admin:
         remaining = int(cd.get("paid_until", 0) - time.time())
-        if remaining <= 60 and remaining > 0:
-            await message.answer(f"⏰ Less than a minute remaining...")
+        if remaining <= 60 and remaining > 0 and not cd.get("minute_warning_shown"):
+            cd["minute_warning_shown"] = True
+            save_user(user_id, user)
+            await message.answer(f"⏰ Less than a minute remaining...", reply_markup=get_menu_keyboard())
 
     mood = update_mood(user)
 
@@ -705,7 +709,7 @@ async def chat_handler(message: Message):
         save_user(user_id, user)
         await bot.send_chat_action(chat_id=user_id, action="typing")
         await asyncio.sleep(random.uniform(5.0, 7.0))
-        await message.answer(f"{reply} {emoji}")
+        await message.answer(f"{reply} {emoji}", reply_markup=get_menu_keyboard())
         log_dialog(user_text, reply)
         return
 
@@ -739,7 +743,7 @@ async def chat_handler(message: Message):
         cd["free_ai_count"] = free_ai_count + 1
 
     save_user(user_id, user)
-    await message.answer(final_reply)
+    await message.answer(final_reply, reply_markup=get_menu_keyboard())
     log_dialog(user_text, ai_reply)
 
 
