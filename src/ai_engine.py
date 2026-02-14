@@ -8,12 +8,10 @@ from src.config import (
     SHORT_MESSAGE_PATTERNS, SHORT_REPLIES
 )
 
-AI_INTEGRATIONS_OPENAI_API_KEY = os.environ.get("AI_INTEGRATIONS_OPENAI_API_KEY")
-AI_INTEGRATIONS_OPENAI_BASE_URL = os.environ.get("AI_INTEGRATIONS_OPENAI_BASE_URL")
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 
 client = OpenAI(
-    api_key=AI_INTEGRATIONS_OPENAI_API_KEY,
-    base_url=AI_INTEGRATIONS_OPENAI_BASE_URL
+    api_key=OPENAI_API_KEY,
 )
 
 
@@ -103,12 +101,10 @@ RULES:
     messages.append({"role": "user", "content": user_message})
 
     try:
-        # the newest OpenAI model is "gpt-5" which was released August 7, 2025.
-        # do not change this unless explicitly requested by the user
         response = client.chat.completions.create(
-            model="gpt-5-mini",
+            model="gpt-4o-mini",
             messages=messages,
-            max_completion_tokens=200,
+            max_tokens=200,
         )
         text = response.choices[0].message.content or ""
         text = re.sub(r'[\U0001F600-\U0001F64F\U0001F300-\U0001F5FF\U0001F680-\U0001F6FF\U0001F1E0-\U0001F1FF\U00002702-\U000027B0\U0001F900-\U0001F9FF\U0000FE00-\U0000FE0F\U0000200D\U00002640-\U00002642\U00002600-\U000026FF\U0001FA00-\U0001FA6F\U0001FA70-\U0001FAFF]+', '', text)
