@@ -236,10 +236,10 @@ async def companion_selected(callback: CallbackQuery):
         if len(used) >= FREE_COMPANIONS_LIMIT and not has_active_access(user, companion_id, user_id) and not is_admin(user_id):
             if cd.get("free_ai_count", 0) == 0 and cd.get("paid_until", 0) == 0:
                 await callback.message.answer(
-                    "You've already chatted with two companions for free.\n"
-                    "Choose one of them, or open access to chat with someone new."
+                    f"You've already chatted with two companions for free.\n"
+                    f"Open access to chat with {companion['name']}:",
+                    reply_markup=get_payment_keyboard(companion_id)
                 )
-                await send_companion_cards(user_id)
                 await callback.answer()
                 return
         if companion_id not in used:
