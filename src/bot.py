@@ -37,25 +37,33 @@ def is_admin(user_id: int) -> bool:
     return user_id == ADMIN_ID
 
 
-def has_active_access(user: dict, companion_id: str) -> bool:
-    if is_admin(0):
-        pass
+def has_active_access(user: dict, companion_id: str, user_id: int = 0) -> bool:
+    if is_admin(user_id):
+        return True
     cd = get_companion_data(user, companion_id)
     return time.time() < cd.get("paid_until", 0)
 
 
 def check_bonus(user: dict, companion_id: str) -> bool:
-    cd = get_companion_data(user, companion_id)
-    paid_ended_at = cd.get("paid_ended_at", 0)
+    last_paid_ended = user.get("last_paid_ended_at", 0)
     if (
-        paid_ended_at > 0
-        and not cd.get("bonus_given", False)
-        and time.time() - paid_ended_at <= BONUS_WINDOW
+        last_paid_ended > 0
+        and not user.get("bonus_given", False)
+        and time.time() - last_paid_ended <= BONUS_WINDOW
     ):
-        cd["bonus_given"] = True
+        user["bonus_given"] = True
+        cd = get_companion_data(user, companion_id)
         cd["paid_until"] = time.time() + BONUS_DURATION
         return True
     return False
+
+
+def check_paid_expiry(user: dict, companion_id: str):
+    cd = get_companion_data(user, companion_id)
+    paid_until = cd.get("paid_until", 0)
+    if paid_until > 0 and time.time() >= paid_until:
+        user["last_paid_ended_at"] = paid_until
+        cd["paid_until"] = 0
 
 
 def get_menu_keyboard() -> ReplyKeyboardMarkup:
@@ -209,7 +217,7 @@ async def companion_selected(callback: CallbackQuery):
     cd = get_companion_data(user, companion_id)
 
     if companion_id not in used:
-        if len(used) >= FREE_COMPANIONS_LIMIT and not has_active_access(user, companion_id) and not is_admin(user_id):
+        if len(used) >= FREE_COMPANIONS_LIMIT and not has_active_access(user, companion_id, user_id) and not is_admin(user_id):
             if cd.get("free_ai_count", 0) == 0 and cd.get("paid_until", 0) == 0:
                 await callback.message.answer(
                     "You've already chatted with two companions for free.\n"
@@ -285,7 +293,7 @@ async def successful_payment_handler(message: Message):
         cd = get_companion_data(user, companion_id)
 
         cd["paid_until"] = time.time() + PAID_ACCESS_DURATION
-        cd["paid_ended_at"] = 0
+        user["last_paid_ended_at"] = 0
         user["current_companion"] = companion_id
         user["state"] = "chatting"
         save_user(user_id, user)
@@ -422,6 +430,21 @@ async def chat_handler(message: Message):
         return
 
     if not user.get("age_confirmed"):
+        age_text = (
+            "International studio of beautiful models\n"
+            "who enjoy private conversations with you.\n\n"
+            "🔞 Adults only (18+)\n\n"
+            "By continuing, you confirm that:\n"
+            "• You are 18 years old or older\n"
+            "• This is a virtual conversation\n"
+            "• You agree to the Terms\n\n"
+            "Do you confirm?"
+        )
+        kb = InlineKeyboardMarkup(inline_keyboard=[
+            [InlineKeyboardButton(text="✅ I am 18+", callback_data="age_confirm")],
+            [InlineKeyboardButton(text="❌ Leave", callback_data="age_deny")],
+        ])
+        await message.answer(age_text, reply_markup=kb)
         return
 
     if not message.text:
@@ -458,6 +481,8 @@ async def chat_handler(message: Message):
     cd = get_companion_data(user, companion_id)
     user_text = message.text.strip()
 
+    check_paid_expiry(user, companion_id)
+
     if check_bonus(user, companion_id):
         save_user(user_id, user)
         await message.answer(
@@ -473,11 +498,7 @@ async def chat_handler(message: Message):
     admin = is_admin(user_id)
 
     if not admin:
-        if cd.get("free_ai_count", 0) >= FREE_AI_REPLIES_PER_COMPANION and not has_active_access(user, companion_id):
-            if cd.get("paid_until", 0) > 0 and cd.get("paid_ended_at", 0) == 0:
-                cd["paid_ended_at"] = cd.get("paid_until", 0)
-                save_user(user_id, user)
-
+        if cd.get("free_ai_count", 0) >= FREE_AI_REPLIES_PER_COMPANION and not has_active_access(user, companion_id, user_id):
             if not cd.get("paywall_shown"):
                 cd["paywall_shown"] = True
                 save_user(user_id, user)
@@ -495,11 +516,9 @@ async def chat_handler(message: Message):
                 )
             return
 
-    if has_active_access(user, companion_id):
+    if has_active_access(user, companion_id, user_id) and not admin:
         remaining = int(cd.get("paid_until", 0) - time.time())
         if remaining <= 60 and remaining > 0:
-            mins = remaining // 60
-            secs = remaining % 60
             await message.answer(f"⏰ Less than a minute remaining...")
 
     mood = update_mood(user)
@@ -540,7 +559,7 @@ async def chat_handler(message: Message):
     if len(cd["chat_history"]) > 20:
         cd["chat_history"] = cd["chat_history"][-20:]
 
-    if not admin and not has_active_access(user, companion_id):
+    if not admin and not has_active_access(user, companion_id, user_id):
         cd["free_ai_count"] = free_ai_count + 1
 
     save_user(user_id, user)
@@ -550,7 +569,7 @@ async def chat_handler(message: Message):
 async def handle_photo_request(message: Message, user: dict, user_id: int, companion: dict, cd: dict):
     companion_id = companion["id"]
 
-    if not has_active_access(user, companion_id) and not is_admin(user_id):
+    if not has_active_access(user, companion_id, user_id) and not is_admin(user_id):
         await message.answer(
             "Photos are available with active access. Open access to see more:",
             reply_markup=get_payment_keyboard(companion_id)

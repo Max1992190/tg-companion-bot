@@ -52,6 +52,8 @@ def _default_user() -> dict:
         "mood": "warm",
         "mood_last_change": time.time(),
         "last_emoji": None,
+        "bonus_given": False,
+        "last_paid_ended_at": 0,
     }
 
 
