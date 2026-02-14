@@ -80,7 +80,7 @@ def get_full_menu_keyboard() -> InlineKeyboardMarkup:
         inline_keyboard=[
             [InlineKeyboardButton(text="💬 Back to chat", callback_data="back_to_chat")],
             [InlineKeyboardButton(text="🔁 Change companion", callback_data="change_companion")],
-            [InlineKeyboardButton(text="🧲 New models coming", callback_data="new_models")],
+            [InlineKeyboardButton(text="🧲 Recruiting models", callback_data="new_models")],
             [InlineKeyboardButton(text="🆘 Support", callback_data="support")],
             [InlineKeyboardButton(text="ℹ️ About", callback_data="about")],
             [InlineKeyboardButton(text="📄 Terms", callback_data="terms")],
@@ -362,7 +362,27 @@ async def change_companion(callback: CallbackQuery):
 
 @router.callback_query(F.data == "new_models")
 async def new_models(callback: CallbackQuery):
-    await callback.message.answer("New models are coming soon... Stay tuned! 🧲")
+    await callback.message.answer(
+        "We are looking for people to join our team\n"
+        "with a pleasant, well-groomed appearance\n"
+        "and a lively, warm personality.\n\n"
+        "It is important to be able to maintain a conversation,\n"
+        "be an attentive listener,\n"
+        "and show genuine interest in people.\n\n"
+        "Having a background in psychology\n"
+        "or experience in emotional support\n"
+        "will be a strong advantage —\n"
+        "because we do more than just talk.\n\n"
+        "We help people cope with difficult situations,\n"
+        "emotional struggles,\n"
+        "and moments of low mood.\n\n"
+        "If you are empathetic, able to listen,\n"
+        "support others,\n"
+        "and want to make someone's days a little easier and warmer —\n"
+        "we would be happy to hear from you 🤍\n\n"
+        "Contact:\nanketa.loveis2030@gmail.com\n\n"
+        "Please send a short introduction about yourself."
+    )
     await callback.answer()
 
 
