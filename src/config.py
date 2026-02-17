@@ -17,7 +17,7 @@ MOOD_CHANGE_MAX = 1080
 
 DATA_FILE = "data/users.json"
 
-PHOTO_TRIGGER_WORDS = ["photo", "pic", "picture", "show me", "send a photo"]
+PHOTO_TRIGGER_WORDS = ["photo", "foto", "pic", "picture", "show me", "send a photo", "send pic", "send photo", "send me a photo", "send me pic"]
 
 SHORT_MESSAGE_PATTERNS = [
     "ok", "okay", "yeah", "yes", "no", "nah", "lol", "haha", "hehe",

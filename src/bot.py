@@ -788,15 +788,16 @@ async def handle_photo_request(message: Message, user: dict, user_id: int, compa
             await message.answer(f"Give me a moment... I'll send another one soon 😉")
             return
 
-    photo_id = available[0]
-    cd["photos_sent"] = sent + [photo_id]
+    photo_path = available[0]
+    cd["photos_sent"] = sent + [photo_path]
     cd["last_photo_time"] = now
     save_user(user_id, user)
 
     try:
+        photo = FSInputFile(photo_path)
         await bot.send_photo(
             chat_id=user_id,
-            photo=photo_id,
+            photo=photo,
             caption=f"Just for you... 💕",
             protect_content=True,
         )
