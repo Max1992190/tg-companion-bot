@@ -707,6 +707,7 @@ async def chat_handler(message: Message):
         await bot.send_chat_action(chat_id=user_id, action="typing")
         await asyncio.sleep(random.uniform(2.0, 4.0))
         await message.answer(f"{reply} {emoji}", reply_markup=get_menu_keyboard())
+        log_dialog(user_text, reply)
         return
 
     if is_short_message(user_text):

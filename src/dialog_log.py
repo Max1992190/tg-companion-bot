@@ -1,6 +1,6 @@
 import os
 
-LOG_FILE = "data/dialog_logs.txt"
+LOG_FILE = "dialog/dialog_logs.txt"
 MAX_ENTRIES = 100
 SEPARATOR = "-----\n"
 
