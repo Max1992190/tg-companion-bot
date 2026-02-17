@@ -47,7 +47,13 @@ COMPANIONS = [
         "greeting": "Hi. I'm Mia. I like conversations that feel a little closer.",
         "profile_photo": "attached_assets/IMG_9875_1771081522683.JPG",
         "welcome_photo": "attached_assets/IMG_0089_1771095192070.JPG",
-        "photos": [],
+        "photos": [
+            "attached_assets/IMG_9872_1770466939069_1771323968045.jpeg",
+            "attached_assets/IMG_9873_1770466939070_1771323968046.jpeg",
+            "attached_assets/IMG_9874_1770466939070_1771323968046.jpeg",
+            "attached_assets/IMG_9875_1770466939070_1771323968047.jpeg",
+            "attached_assets/IMG_9876_1770466939070_1771323968047.jpeg",
+        ],
     },
     {
         "id": "james",
@@ -57,7 +63,13 @@ COMPANIONS = [
         "greeting": "Hey. I'm James. Let's just talk openly and see where it goes.",
         "profile_photo": "attached_assets/IMG_0075_1771081508037.JPG",
         "welcome_photo": "attached_assets/IMG_0097_1771095226053.JPG",
-        "photos": [],
+        "photos": [
+            "attached_assets/IMG_9877_1770466678896_1771324036286.jpeg",
+            "attached_assets/IMG_9878_1770466678896_1771324036287.jpeg",
+            "attached_assets/IMG_9879_1770466678896_1771324036287.jpeg",
+            "attached_assets/IMG_9880_1770466678896_1771324036287.jpeg",
+            "attached_assets/IMG_9881_1770466678896_1771324036288.jpeg",
+        ],
     },
     {
         "id": "isabella",
@@ -67,7 +79,13 @@ COMPANIONS = [
         "greeting": "Hello. I'm Isabella. I enjoy conversations that feel thoughtful and real.",
         "profile_photo": "attached_assets/IMG_0073_1771081577205.JPG",
         "welcome_photo": "attached_assets/IMG_0095_1771095259433.JPG",
-        "photos": [],
+        "photos": [
+            "attached_assets/IMG_9857_1770467010835_1771324074032.jpeg",
+            "attached_assets/IMG_9858_1770467010835_1771324074033.jpeg",
+            "attached_assets/IMG_9859_1770467010834_1771324074033.jpeg",
+            "attached_assets/IMG_9860_1770467010835_1771324074033.jpeg",
+            "attached_assets/IMG_9861_1770467010835_1771324074034.jpeg",
+        ],
     },
 ]
 
