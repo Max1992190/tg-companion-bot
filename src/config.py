@@ -46,6 +46,24 @@ UNCLEAR_REPLIES = [
     "I didn't quite catch that.",
 ]
 
+PHOTO_CAPTIONS = [
+    "I thought you might like this… ✨",
+    "This one feels a bit special.",
+    "Just for you.",
+    "I was in the mood to share this.",
+    "A little glimpse, just between us.",
+    "Tell me what you feel when you see this.",
+    "I hesitated… but decided to show you.",
+    "This feels right to share right now.",
+    "I saved this one for you… 💫",
+    "Something about this moment felt right.",
+    "I hope this makes you smile.",
+    "A little closer, just for tonight…",
+    "I wanted you to see this side of me.",
+    "Don't look away… 😏",
+    "This is just between us, okay?",
+]
+
 MOODS = ["warm", "playful", "calm", "dreamy"]
 
 MOOD_EMOJIS = {

@@ -15,7 +15,7 @@ from aiogram.enums import ParseMode
 from src.config import (
     BOT_TOKEN, ADMIN_ID, ADMIN_IDS, FREE_COMPANIONS_LIMIT, FREE_AI_REPLIES_PER_COMPANION,
     PAYMENT_STARS_PRICE, PAID_ACCESS_DURATION, BONUS_DURATION, BONUS_WINDOW,
-    PHOTO_COOLDOWN_MIN, PHOTO_COOLDOWN_MAX, PHOTO_TRIGGER_WORDS,
+    PHOTO_COOLDOWN_MIN, PHOTO_COOLDOWN_MAX, PHOTO_TRIGGER_WORDS, PHOTO_CAPTIONS,
 )
 from src.storage import get_user, save_user, get_companion_data
 from src.companions import get_companion_by_id, get_companions_list
@@ -792,6 +792,12 @@ async def handle_photo_request(message: Message, user: dict, user_id: int, compa
     photo_path = available[0]
     cd["photos_sent"] = sent + [photo_path]
     cd["last_photo_time"] = now
+
+    last_caption = cd.get("last_photo_caption", "")
+    captions = [c for c in PHOTO_CAPTIONS if c != last_caption]
+    caption = random.choice(captions)
+    cd["last_photo_caption"] = caption
+
     save_user(user_id, user)
 
     try:
@@ -799,7 +805,7 @@ async def handle_photo_request(message: Message, user: dict, user_id: int, compa
         await bot.send_photo(
             chat_id=user_id,
             photo=photo,
-            caption=f"Just for you... 💕",
+            caption=caption,
             protect_content=True,
         )
     except Exception as e:
