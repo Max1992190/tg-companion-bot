@@ -56,6 +56,7 @@ def check_bonus(user: dict, companion_id: str) -> bool:
         user["bonus_given"] = True
         cd = get_companion_data(user, companion_id)
         cd["paid_until"] = time.time() + BONUS_DURATION
+        cd["minute_warning_shown"] = False
         return True
     return False
 
