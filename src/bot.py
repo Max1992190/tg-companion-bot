@@ -186,7 +186,7 @@ async def cmd_stats(message: Message):
         await message.answer("⛔ No access.")
         return
 
-    users = get_last_dialogs(limit=1000000)
+    users = get_last_dialogs()
 
     unique_users = len(users)
     total_messages = sum(len(d.get("messages", [])) for d in users)
