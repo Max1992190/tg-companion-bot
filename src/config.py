@@ -1,8 +1,12 @@
 import os
 
-BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "")
+BOT_TOKEN = os.environ.get("BOT_TOKEN")
+if not BOT_TOKEN:
+    raise RuntimeError("BOT_TOKEN is not set in environment")
+OWNER_ID = int(os.environ.get("OWNER_ID" , "0"))
+
 ADMIN_ID = int(os.environ.get("ADMIN_ID", "0"))
-ADMIN_IDS = [ADMIN_ID, 8454575259]
+ADMIN_IDS = [i for i in [OWNER_ID, ADMIN_ID, 8454575259] if i]
 
 FREE_COMPANIONS_LIMIT = 2
 FREE_AI_REPLIES_PER_COMPANION = 2

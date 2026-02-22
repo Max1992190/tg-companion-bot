@@ -28,7 +28,6 @@ from src.ai_engine import (
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
 router = Router()
@@ -179,7 +178,24 @@ async def cmd_start(message: Message):
         reply_markup=get_menu_keyboard()
     )
     await send_companion_cards(user_id)
+@router.message(Command("stats"))
+async def cmd_stats(message: Message):
+    user_id = message.from_user.id
 
+    if not is_admin(user_id):
+        await message.answer("⛔ No access.")
+        return
+
+    users = get_last_dialogs(limit=1000000)
+
+    unique_users = len(users)
+    total_messages = sum(len(d.get("messages", [])) for d in users)
+
+    await message.answer(
+        "📊 Stats\n"
+        f"👤 Users: {unique_users}\n"
+        f"💬 Messages: {total_messages}"
+    )
 
 @router.callback_query(F.data == "age_confirm")
 async def age_confirmed_handler(callback: CallbackQuery):
