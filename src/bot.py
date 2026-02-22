@@ -189,7 +189,7 @@ async def cmd_stats(message: Message):
     users = get_last_dialogs()
 
     unique_users = len(users)
-    total_messages = sum(len(d.get("messages", [])) for d in users)
+    total_messages = sum(len(d) for d in users)
 
     await message.answer(
         "📊 Stats\n"
